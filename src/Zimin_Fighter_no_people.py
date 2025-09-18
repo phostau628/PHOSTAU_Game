@@ -238,14 +238,14 @@ BOSS_TYPES = {
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 46666,
+        "health": 48888,
         "speed_range": (-6, 6),
-        "bullet_speed": 2.2
+        "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":41231,
+        "health":43269,
         "speed_range": (-5, 5),
         "bullet_speed": 12
     }
@@ -290,7 +290,7 @@ class Enemy(pygame.sprite.Sprite):
             random.uniform(*self.speed_range) if self.is_boss else random.choice([-2, 2]),
             random.uniform(0.5, 1.5)
         )
-        self.fire_delay = 416 if self.is_boss else 1111
+        self.fire_delay = 416 if self.is_boss else 999
         self.last_shot = 0
         self.min_y = 100 if self.is_boss else 50
 
