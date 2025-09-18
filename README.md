@@ -77,7 +77,7 @@
 
 ## 🚀 安装与运行
 ### 前置要求
-- 操作系统：Windows/macOS/Linux  
+- 操作系统：Windows/macOS/Linux  （优先使用非windows系统运行游戏，可体验原生画质，如果用windows先禁用游戏程序的 Windows DPI 缩放，即可实现和非windows一样的效果，否则会导致变成类清朝画质（只是画质稍微变糊，也能玩））
 - Python 版本：3.8 及以上（推荐3.10，兼容性更好）  
 - 依赖库：Pygame（2.0+版本）  
 
