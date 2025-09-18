@@ -114,6 +114,7 @@ python3 -m pip install pygame
 - **普通模式**：
   ```bash
   # Windows
+  cd .\PHOSTAU_Game #进入项目根目录（执行前必做，后面执行.py的指令也一样）
   python src/Zimin_Fighter_normal.py
 
   # macOS/Linux
