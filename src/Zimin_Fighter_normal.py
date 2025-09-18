@@ -67,11 +67,12 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.velocity.y * 1.2
 
         self.trail.append(self.rect.center)
-        if len(self.trail) > 15:
+        if len(self.trail) > 8:
             self.trail.pop(0)
 
         # 自动清理边界外的子弹
-        if self.rect.bottom < 0 or self.rect.top > 600:
+        if (self.rect.right < 0 or self.rect.left > 1000 or
+                self.rect.bottom < 0 or self.rect.top > 600):
             self.kill()
 
 
@@ -80,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.game = game
         try:
-            self.orig_image = pygame.image.load(resource_path("chart/3D03487997CF31B6E196BCC5AD61E1D1.jpg"))  # ← 修改这里
+            self.orig_image = pygame.image.load(resource_path("chart/3D03487997CF31B6E196BCC5AD61E1D1.jpg"))  
         except Exception as e:
             print(f"玩家图片加载失败: {e}")
             sys.exit()
@@ -103,6 +104,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -131,6 +134,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -159,6 +164,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -187,6 +194,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -195,7 +204,7 @@ class Player(pygame.sprite.Sprite):
                 self.shoot4()
 
     def shoot4(self):
-        for angle in [-72, -56, -45, -36, -30, -24, -12, 0, 12, 24, 30, 36, 45, 56, 72]:
+        for angle in [-72, -56, -45, -36, -24, -12, 0, 12, 24, 36, 45, 56, 72]:
             velocity = Vector2(0, -6).rotate(angle)
             bullet = Bullet(
                 self.rect.midtop,
@@ -216,7 +225,7 @@ BOSS_TYPES = {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
         "health": 2222,
-        "speed_range": (-2, 2),
+        "speed_range": (-4, 4),
         "bullet_speed": 5
     },
     3: {
@@ -230,15 +239,15 @@ BOSS_TYPES = {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
         "health": 10000,
-        "speed_range": (-4, 4),
-        "bullet_speed": 6
+        "speed_range": (-6, 6),
+        "bullet_speed": 5
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health": 10000,
-        "speed_range": (-3, 3),
-        "bullet_speed": 6
+        "health":10000 ,
+        "speed_range": (-5, 5),
+        "bullet_speed": 5
     }
 
 }
@@ -267,7 +276,7 @@ class Enemy(pygame.sprite.Sprite):
                 img_path = resource_path("chart/5D12D4322F494C8D40ACB659FA2536DD.jpg")
                 self.orig_image = pygame.image.load(img_path)
                 size = (60, 60)
-                self.health = 100
+                self.health = 88
         except Exception as e:
             print(f"图片加载失败: {e}")
             sys.exit()
@@ -281,7 +290,7 @@ class Enemy(pygame.sprite.Sprite):
             random.uniform(*self.speed_range) if self.is_boss else random.choice([-2, 2]),
             random.uniform(0.5, 1.5)
         )
-        self.fire_delay = 1000 if self.is_boss else 2500
+        self.fire_delay = 1000 if self.is_boss else 1800
         self.last_shot = 0
         self.min_y = 100 if self.is_boss else 50
 
@@ -313,7 +322,7 @@ class Enemy(pygame.sprite.Sprite):
                     self.last_vertical_switch = current_time 
                 # 2.2 10%概率随机更新垂直速度（让移动更灵活）
             elif random.random() < 0.1:
-                self.speed.y = random.uniform(1.8, 2.8)  # 垂直速度：0.8~1.8
+                self.speed.y = random.uniform(1.8, 2.4)  # 垂直速度
                 # 随机决定垂直方向（50%向下，50%向上）
                 if random.random() < 0.5:
                     self.speed.y *= -1
@@ -359,7 +368,7 @@ class Enemy(pygame.sprite.Sprite):
 
             elif self.boss_type == 3:
                 # 类型3：随机散射
-                for angle in range(0, 360, 34):
+                for angle in range(0, 360, 28):
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
 
@@ -375,7 +384,7 @@ class Enemy(pygame.sprite.Sprite):
                 # 环形弹
 
 
-                for _ in range(18):
+                for _ in range(15):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
@@ -387,7 +396,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
 
 
-            for angle in [-135, -45, 45, 135]:
+            for angle in [0]:
                 velocity = Vector2(0, 5).rotate(angle)
                 bullet = Bullet(
                     self.rect.midtop,
@@ -418,7 +427,7 @@ class Enemy(pygame.sprite.Sprite):
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((1000, 600))
-        pygame.display.set_caption("Zimin's Fighter       (Introduction:移动:WASD键;攻击:空格键)")
+        pygame.display.set_caption("Zimin's Fighter")
         self.clock = pygame.time.Clock()
         self.screen_rect = self.screen.get_rect()
 
@@ -429,10 +438,11 @@ class Game:
         self.wave = 0
         self.game_over = False
         self.victory = False
+        self.in_start_menu = True
         self.font = pygame.font.Font(None, 48)
 
         self.max_wave = 20
-        self.spawn_wave()
+        # self.spawn_wave()
 
     def spawn_wave(self):
         self.wave += 1
@@ -480,6 +490,11 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                if self.in_start_menu and event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:  # 1=鼠标左键
+                        self.in_start_menu = False  # 切换到游戏状态
+                        self.spawn_wave()  # 生成第一波敌人
                 # 合并处理game_over和victory的点击事件
                 if (self.game_over or self.victory) and event.type == pygame.MOUSEBUTTONDOWN:
                     if self.again_rect.collidepoint(event.pos):
@@ -487,34 +502,60 @@ class Game:
 
             keys = pygame.key.get_pressed()
 
+            if self.in_start_menu:
+                self.screen.fill((30, 30, 60))  # 背景色（和游戏一致）
+                
+                # 绘制标题
+                title_font = pygame.font.Font(None, 72)  
+                title_text = title_font.render("ZIMIN FIGHTER", True, 	(255, 255, 255))  
+                title_rect = title_text.get_rect(center=(500, 200))
+                self.screen.blit(title_text, title_rect)
+                
+                # 绘制开始提示
+                start_font = pygame.font.Font(None, 48)
+                start_text = start_font.render("CLICK TO START", True, (255, 255, 255))
+                start_rect = start_text.get_rect(center=(500, 350))
+                self.screen.blit(start_text, start_rect)
+                
+                # 绘制操作说明
+                tip_font = pygame.font.Font(None, 32)
+                tip1_text = tip_font.render("Movement: WASD Keys | Attack: Spacebar (Holdable)", True, (180, 180, 180))
+                tip1_rect = tip1_text.get_rect(center=(500, 450))
+                self.screen.blit(tip1_text, tip1_rect)
+                
+                pygame.display.flip()  # 更新屏幕
+                self.clock.tick(30)  # 降低开始界面帧率，减少资源占用
+                continue  # 跳过后面的游戏逻辑，停留在开始界面
+
             if not self.game_over and not self.victory:
 
                 # 原有的游戏逻辑更新
                 if self.wave<=5:
                     self.player.update1(keys)
-                    self.player.shoot_delay=150
+                    self.player.shoot_delay=100
                 elif self.wave<=10:
                     self.player.update2(keys)
-                    self.player.shoot_delay=100
+                    self.player.shoot_delay=80
                 elif self.wave<=15:
                     self.player.update3(keys)
-                    self.player.shoot_delay=80
+                    self.player.shoot_delay=60
                 else:
                     self.player.update4(keys)
-                    self.player.shoot_delay=40
+                    self.player.shoot_delay=45
 
                 self.enemies.update()
 
                 # 碰撞检测优化
-                if pygame.sprite.spritecollide(self.player, self.enemy_bullets, True):
-                    self.player.health = max(0, self.player.health - 5)
-                    if self.player.health <= 0:
-                        self.game_over = True
+                if pygame.time.get_ticks() % 2 == 0:
+                    if pygame.sprite.spritecollide(self.player, self.enemy_bullets, True):
+                        self.player.health = max(0, self.player.health - 5)
+                        if self.player.health <= 0:
+                            self.game_over = True
 
                 # 使用更精确的碰撞检测
                 hits = pygame.sprite.groupcollide(
                     self.enemies, self.bullets, False, True,
-                    collided=pygame.sprite.collide_rect_ratio(0.8)
+                    collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy, _ in hits.items():
                     enemy.health -= 12
@@ -534,31 +575,32 @@ class Game:
 
             # 绘制子弹轨迹（增强可见性）
             for bullet in self.enemy_bullets:
-                for i, pos in enumerate(bullet.trail):
-                    alpha = int(200 * (i / len(bullet.trail)))
-                    width = 4 - i * 0.25
-                    # 确保颜色元组拼接正确
-                    color = bullet.trail_color + (alpha,)
-                    pygame.draw.line(
-                        self.screen,
-                        color,
-                        pos,
-                        bullet.trail[i - 1] if i > 0 else pos,
-                        int(width)
-                    )
+                if len(bullet.trail) >= 2:  # 只有至少2个点才绘制
+                    for i in range(1, len(bullet.trail)):
+                        alpha = int(200 * (i / len(bullet.trail)))
+                        width = 3 - i * 0.3  # 减少宽度计算
+                        # 使用预计算的颜色值，避免每次计算
+                        pygame.draw.line(
+                            self.screen,
+                            bullet.trail_color,
+                            bullet.trail[i-1],
+                            bullet.trail[i],
+                            max(1, int(width))  # 确保宽度至少为1
+                        )
 
             for bullet in self.bullets:
                 for i, pos in enumerate(bullet.trail):
+                    if len(bullet.trail) < 2:  # 新增：轨迹点不足2个时不绘制，减少无效计算
+                        break
                     alpha = int(200 * (i / len(bullet.trail)))
-                    width = 3 - i * 0.2
-                    # 确保颜色元组拼接正确
+                    width = max(1, int(3 - i * 0.2))  # 统一宽度计算，确保不小于1（避免绘制异常）
                     color = bullet.trail_color + (alpha,)
                     pygame.draw.line(
                         self.screen,
                         color,
                         pos,
                         bullet.trail[i - 1] if i > 0 else pos,
-                        int(width)
+                        width  # 直接用预计算的wi
                     )
 
             self.screen.blit(self.player.image, self.player.rect)
@@ -582,7 +624,7 @@ class Game:
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 
-                again_text = self.font.render("CLICK TO RESTART", True, (200, 200, 200))
+                again_text = self.font.render("CLICK TO RESTART", True, (205, 155, 0))
                 self.again_rect = again_text.get_rect(center=(500, 350))
                 self.screen.blit(again_text, self.again_rect)
 
@@ -591,7 +633,7 @@ class Game:
                 overlay.fill((0, 0, 0, 180))
                 self.screen.blit(overlay, (0, 0))
 
-                text = self.font.render("VICTORY!", True, (255, 50, 50))
+                text = self.font.render("SUCCESS!", True, (255, 235, 59))
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 

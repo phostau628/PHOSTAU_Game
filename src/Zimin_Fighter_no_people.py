@@ -67,11 +67,12 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.velocity.y * 1.2
 
         self.trail.append(self.rect.center)
-        if len(self.trail) > 15:
+        if len(self.trail) > 8:
             self.trail.pop(0)
 
         # 自动清理边界外的子弹
-        if self.rect.bottom < 0 or self.rect.top > 600:
+        if (self.rect.right < 0 or self.rect.left > 1000 or
+                self.rect.bottom < 0 or self.rect.top > 600):
             self.kill()
 
 
@@ -103,6 +104,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -131,6 +134,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -159,6 +164,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -187,6 +194,8 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_s]:
             self.rect.y += self.speed
         self.rect.clamp_ip(self.game.screen_rect)
+        self.rect.x = pygame.math.clamp(self.rect.x, 0, self.game.screen_rect.width - self.rect.width)
+        self.rect.y = pygame.math.clamp(self.rect.y, 0, self.game.screen_rect.height - self.rect.height)
 
         if keys[pygame.K_SPACE]:
             now = pygame.time.get_ticks()
@@ -195,7 +204,7 @@ class Player(pygame.sprite.Sprite):
                 self.shoot4()
 
     def shoot4(self):
-        for angle in [-72, -56, -45, -36, -30, -24, -12, 0, 12, 24, 30, 36, 45, 56, 72]:
+        for angle in [-72, -56, -45, -36, -24, -12, 0, 12, 24, 36, 45, 56, 72]:
             velocity = Vector2(0, -6).rotate(angle)
             bullet = Bullet(
                 self.rect.midtop,
@@ -215,7 +224,7 @@ BOSS_TYPES = {
     2: {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
-        "health": 6666,
+        "health": 6667,
         "speed_range": (-4, 4),
         "bullet_speed": 5
     },
@@ -281,7 +290,7 @@ class Enemy(pygame.sprite.Sprite):
             random.uniform(*self.speed_range) if self.is_boss else random.choice([-2, 2]),
             random.uniform(0.5, 1.5)
         )
-        self.fire_delay = 416 if self.is_boss else 999
+        self.fire_delay = 416 if self.is_boss else 1111
         self.last_shot = 0
         self.min_y = 100 if self.is_boss else 50
 
@@ -313,7 +322,7 @@ class Enemy(pygame.sprite.Sprite):
                     self.last_vertical_switch = current_time 
                 # 2.2 10%概率随机更新垂直速度（让移动更灵活）
             elif random.random() < 0.1:
-                self.speed.y = random.uniform(1.8, 2.8)  # 垂直速度：0.8~1.8
+                self.speed.y = random.uniform(1.8, 2.4)  # 垂直速度
                 # 随机决定垂直方向（50%向下，50%向上）
                 if random.random() < 0.5:
                     self.speed.y *= -1
@@ -375,7 +384,7 @@ class Enemy(pygame.sprite.Sprite):
                 # 环形弹
 
 
-                for _ in range(25):
+                for _ in range(20):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
@@ -532,20 +541,21 @@ class Game:
                     self.player.shoot_delay=50
                 else:
                     self.player.update4(keys)
-                    self.player.shoot_delay=35
+                    self.player.shoot_delay=40
 
                 self.enemies.update()
 
                 # 碰撞检测优化
-                if pygame.sprite.spritecollide(self.player, self.enemy_bullets, True):
-                    self.player.health = max(0, self.player.health - 5)
-                    if self.player.health <= 0:
-                        self.game_over = True
+                if pygame.time.get_ticks() % 2 == 0:
+                    if pygame.sprite.spritecollide(self.player, self.enemy_bullets, True):
+                        self.player.health = max(0, self.player.health - 5)
+                        if self.player.health <= 0:
+                            self.game_over = True
 
                 # 使用更精确的碰撞检测
                 hits = pygame.sprite.groupcollide(
                     self.enemies, self.bullets, False, True,
-                    collided=pygame.sprite.collide_rect_ratio(0.8)
+                    collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy, _ in hits.items():
                     enemy.health -= 12
@@ -565,31 +575,32 @@ class Game:
 
             # 绘制子弹轨迹（增强可见性）
             for bullet in self.enemy_bullets:
-                for i, pos in enumerate(bullet.trail):
-                    alpha = int(200 * (i / len(bullet.trail)))
-                    width = 4 - i * 0.25
-                    # 确保颜色元组拼接正确
-                    color = bullet.trail_color + (alpha,)
-                    pygame.draw.line(
-                        self.screen,
-                        color,
-                        pos,
-                        bullet.trail[i - 1] if i > 0 else pos,
-                        int(width)
-                    )
+                if len(bullet.trail) >= 2:  # 只有至少2个点才绘制
+                    for i in range(1, len(bullet.trail)):
+                        alpha = int(200 * (i / len(bullet.trail)))
+                        width = 3 - i * 0.3  # 减少宽度计算
+                        # 使用预计算的颜色值，避免每次计算
+                        pygame.draw.line(
+                            self.screen,
+                            bullet.trail_color,
+                            bullet.trail[i-1],
+                            bullet.trail[i],
+                            max(1, int(width))  # 确保宽度至少为1
+                        )
 
             for bullet in self.bullets:
                 for i, pos in enumerate(bullet.trail):
+                    if len(bullet.trail) < 2:  # 新增：轨迹点不足2个时不绘制，减少无效计算
+                        break
                     alpha = int(200 * (i / len(bullet.trail)))
-                    width = 3 - i * 0.2
-                    # 确保颜色元组拼接正确
+                    width = max(1, int(3 - i * 0.2))  # 统一宽度计算，确保不小于1（避免绘制异常）
                     color = bullet.trail_color + (alpha,)
                     pygame.draw.line(
                         self.screen,
                         color,
                         pos,
                         bullet.trail[i - 1] if i > 0 else pos,
-                        int(width)
+                        width  # 直接用预计算的wi
                     )
 
             self.screen.blit(self.player.image, self.player.rect)
@@ -626,7 +637,7 @@ class Game:
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 
-                again_text = self.font.render("CLICK TO MOVE FORWARD!", True, (200, 200, 200))
+                again_text = self.font.render("CLICK TO MOVE FORWARD!", True, (0, 255, 0))
                 self.again_rect = again_text.get_rect(center=(500, 350))
                 self.screen.blit(again_text, self.again_rect)
 
