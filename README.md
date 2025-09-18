@@ -150,7 +150,7 @@ python3 -m pip install pygame
 | D            | 向右移动             |
 | 空格键       | 发射子弹（长按可持续攻击） |
 | 窗口关闭按钮 | 退出游戏             |
-| 鼠标左键（开始界面） | 点击「CLICK TO SIGN」启动游戏 |
+| 鼠标左键（开始界面） | 点击「CLICK TO START」启动游戏 |
 | 鼠标左键（游戏结束界面） | 点击「CLICK TO RESTART」重新开始 |
 
 
