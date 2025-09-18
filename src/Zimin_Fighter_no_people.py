@@ -609,11 +609,11 @@ class Game:
                 overlay.fill((0, 0, 0, 180))
                 self.screen.blit(overlay, (0, 0))
 
-                text = self.font.render("GAME OVER", True, (255, 50, 50))
+                text = self.font.render("FALLEN INTO THE ABYSS", True, (255, 50, 50))
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 
-                again_text = self.font.render("CLICK TO RESTART", True, (200, 200, 200))
+                again_text = self.font.render("CLICK TO RESURRENT", True, (205, 155, 0))
                 self.again_rect = again_text.get_rect(center=(500, 350))
                 self.screen.blit(again_text, self.again_rect)
 
@@ -622,11 +622,11 @@ class Game:
                 overlay.fill((0, 0, 0, 180))
                 self.screen.blit(overlay, (0, 0))
 
-                text = self.font.render("VICTORY!", True, (255, 50, 50))
+                text = self.font.render("SUCCESSFULLY EMBRACE REBIRTH!", True, (255, 235, 59))
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 
-                again_text = self.font.render("CLICK TO RESTART", True, (200, 200, 200))
+                again_text = self.font.render("CLICK TO MOVE FORWARD!", True, (200, 200, 200))
                 self.again_rect = again_text.get_rect(center=(500, 350))
                 self.screen.blit(again_text, self.again_rect)
 
