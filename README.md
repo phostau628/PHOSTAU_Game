@@ -7,7 +7,7 @@
 - `src/`：存放游戏主程序（三种模式代码并列）
   - `Zimin_Fighter_normal.py`：普通模式（难度适中，适合新手入门）
   - `Zimin_Fighter_challenge.py`：挑战模式（敌人强度提升，适合进阶玩家）
-  - `Zimin_Fighter_no_people.py`：伪人模式（非人类，敌人属性与攻击逻辑全面强化）
+  - `Zimin_Fighter_no_people.py`：伪人模式（非人类，敌人属性（伪人）与攻击逻辑（有逻辑吗😂）全面强化）
 - `chart/`：存放所有游戏图片资源（玩家、普通敌人、5种BOSS素材，文件名与代码引用严格对应）
 - `introduction/`：可选补充目录，可存放玩法细节、更新日志、彩蛋说明等文档
 
