@@ -145,7 +145,7 @@ python3 -m pip install pygame
 ```
 PHOSTAU_Game/                  # 项目根目录
 ├─ src/                        # 源代码目录
-│  ├─ Zimin_Fighter_normal.py  # 普通模式主程序（正确拼写normal）
+│  ├─ Zimin_Fighter_normal.py  # 普通模式主程序
 │  └─ Zimin_Fighter_challenge.py # 挑战模式主程序
 ├─ chart/                      # 图片资源目录（与src并列）
 │  ├─ 3D03487997CF31B6E196BCC5AD61E1D1.jpg  # 玩家角色图片
