@@ -224,7 +224,7 @@ BOSS_TYPES = {
     2: {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
-        "health": 6667,
+        "health": 7776,
         "speed_range": (-4, 4),
         "bullet_speed": 5
     },
@@ -238,16 +238,16 @@ BOSS_TYPES = {
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 38888,
+        "health": 46666,
         "speed_range": (-6, 6),
-        "bullet_speed": 3
+        "bullet_speed": 2.2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":38888 ,
+        "health":41231,
         "speed_range": (-5, 5),
-        "bullet_speed": 10
+        "bullet_speed": 12
     }
 
 }
@@ -360,7 +360,7 @@ class Enemy(pygame.sprite.Sprite):
             elif self.boss_type == 2:
                 # 类型2：双向螺旋弹
                 phase = pygame.time.get_ticks() // 15
-                for angle in range(0, 360, 22):
+                for angle in range(0, 360, 21):
                     v1 = Vector2(0, self.bullet_speed).rotate(angle + phase)
                     v2 = Vector2(0, self.bullet_speed).rotate(angle - phase)
                     self._create_boss_bullet(v1)
@@ -368,7 +368,7 @@ class Enemy(pygame.sprite.Sprite):
 
             elif self.boss_type == 3:
                 # 类型3：随机散射
-                for angle in range(0, 360, 28):
+                for angle in range(0, 360, 18):
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
 
@@ -384,7 +384,7 @@ class Enemy(pygame.sprite.Sprite):
                 # 环形弹
 
 
-                for _ in range(20):
+                for _ in range(18):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)

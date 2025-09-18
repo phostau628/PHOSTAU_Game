@@ -360,7 +360,7 @@ class Enemy(pygame.sprite.Sprite):
             elif self.boss_type == 2:
                 # 类型2：双向螺旋弹
                 phase = pygame.time.get_ticks() // 15
-                for angle in range(0, 360, 22):
+                for angle in range(0, 360, 24):
                     v1 = Vector2(0, self.bullet_speed).rotate(angle + phase)
                     v2 = Vector2(0, self.bullet_speed).rotate(angle - phase)
                     self._create_boss_bullet(v1)
@@ -368,7 +368,7 @@ class Enemy(pygame.sprite.Sprite):
 
             elif self.boss_type == 3:
                 # 类型3：随机散射
-                for angle in range(0, 360, 28):
+                for angle in range(0, 360, 23):
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
 

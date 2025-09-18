@@ -384,7 +384,7 @@ class Enemy(pygame.sprite.Sprite):
                 # 环形弹
 
 
-                for _ in range(15):
+                for _ in range(25):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
