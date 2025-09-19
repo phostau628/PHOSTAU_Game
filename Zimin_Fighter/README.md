@@ -17,7 +17,7 @@
 
 随着波数推进，玩家火力将自动升级（射击角度增多、射速提升），无需手动解锁；三种模式差异化设计，满足从新手到硬核玩家的不同需求。（注：本人三个难度均已实测能过，附伪人模式通关截图）
 
-<img width="2024" height="1382" alt="屏幕截图 2025-09-19 132129" src="https://github.com/user-attachments/assets/e1f01e42-6328-4efd-911f-e5ef6ea72b2b" />
+<img width="2024" height="1382" alt="屏幕截图 2025-09-19 132129" src="https://bgithub.xyz/user-attachments/assets/e1f01e42-6328-4efd-911f-e5ef6ea72b2b" />
 
 
 
@@ -105,11 +105,11 @@ cd PHOSTAU_Game  # 进入项目根目录（需看到src/、chart/、introduction
 在项目根目录的终端/命令提示符中，执行以下命令安装游戏必需的Pygame库：
 ```bash
 # Windows 系统
-cd ./PHOSTAU_Game #进入项目根目录
+cd ./PHOSTAU_Game/Zimin_Fighter #进入游戏项目主目录
 python -m pip install pygame
 
 # macOS/Linux 系统（若python命令无效，替换为python3）
-cd ./PHOSTAU_Game 
+cd ./PHOSTAU_Game/Zimin_Fighter
 python3 -m pip install pygame
 ```
 
@@ -119,7 +119,7 @@ python3 -m pip install pygame
 - **普通模式**：
   ```bash
   # Windows
-  cd ./PHOSTAU_Game #进入项目根目录（执行前必做，后面执行.py的指令也一样）
+  cd ./PHOSTAU_Game/Zimin_Fighter #进入游戏项目主目录（执行前必做，后面执行.py的指令也一样）
   python src/Zimin_Fighter_normal.py
 
   # macOS/Linux
@@ -143,7 +143,7 @@ python3 -m pip install pygame
   ```
 
 #### 方式2：VS Code启动（新手友好）
-1. 用VS Code打开「PHOSTAU_Game」项目根目录（选择文件夹时直接选PHOSTAU_Game）  
+1. 用VS Code打开「Zimin_Fighter」项目根目录（选择文件夹时直接选Zimin_Fighter）  
 2. 安装Python插件（搜索「Python」，选择微软官方版本）  
 3. 在左侧「资源管理器」中展开`src`文件夹，双击打开对应模式的文件（如`Zimin_Fighter_no_people.py`）  
 4. 点击右上角绿色「运行Python文件」按钮，或按快捷键`Ctrl+F5`  
@@ -166,7 +166,7 @@ python3 -m pip install pygame
 ### 1. 提示「缺少关键文件：XXX.jpg」
 - **原因**：`chart`文件夹路径错误，或图片文件缺失/重命名（代码默认从根目录的`chart/`读取图片）  
 - **解决**：  
-  1. 确认`chart`文件夹在项目根目录下（路径：`PHOSTAU_Game/chart/`），而非`src/chart/`或其他子目录  
+  1. 确认`chart`文件夹在游戏项目主目录下（路径：`Zimin_Fighter/chart/`），而非`src/chart/`或其他子目录  
   2. 检查`chart`内是否包含以下图片（文件名需完全一致，包括后缀）：  
      - 玩家图：`3D03487997CF31B6E196BCC5AD61E1D1.jpg`  
      - 普通敌人图：`5D12D4322F494C8D40ACB659FA2536DD.jpg`  
@@ -199,20 +199,21 @@ python3 -m pip install pygame
 
 ## 📂 项目完整结构
 ```
-PHOSTAU_Game/                  # 项目根目录
-├─ src/                        # 源代码目录（三种模式并列）
-│  ├─ Zimin_Fighter_normal.py  # 普通模式主程序
-│  ├─ Zimin_Fighter_challenge.py # 挑战模式主程序
-│  └─ Zimin_Fighter_no_people.py # 伪人模式主程序
-├─ chart/                      # 图片资源目录（与src并列）
-│  ├─ 3D03487997CF31B6E196BCC5AD61E1D1.jpg  # 玩家角色图片
-│  ├─ 5D12D4322F494C8D40ACB659FA2536DD.jpg  # 普通敌人图片
-│  ├─ 2EF80F6C18C57E37D25365CA2A8E4FD6.jpg  # BOSS 1图片
-│  ├─ 62200DD83E5F8819034E6D058F452E5F.jpg  # BOSS 2图片
-│  ├─ 75CCE7B5E1B58922D3B49B6455844113.jpg  # BOSS 3图片
-│  ├─ 58EBE0C66C49A01BE71264AC79DD0AF0.jpg  # BOSS 4图片
-│  └─ 2A5AFB066FB306E54DD6EDAB5EF294E6.jpg  # BOSS 5图片
-├─ introduction/               # 补充说明目录（可选）
-│  └─ （可放玩法细节、更新日志、彩蛋说明等TXT/MD文件）
-└─ README.md                   # 游戏说明文档（当前文件）
-```
+PHOSTAU_Game/
+├─Zimin_Fighter/                  # 游戏项目主目录
+  ├─ src/                        # 源代码目录（三种模式并列）
+  │  ├─ Zimin_Fighter_normal.py  # 普通模式主程序
+  │  ├─ Zimin_Fighter_challenge.py # 挑战模式主程序
+  │  └─ Zimin_Fighter_no_people.py # 伪人模式主程序
+  ├─ chart/                      # 图片资源目录（与src并列）
+  │  ├─ 3D03487997CF31B6E196BCC5AD61E1D1.jpg  # 玩家角色图片
+  │  ├─ 5D12D4322F494C8D40ACB659FA2536DD.jpg  # 普通敌人图片
+  │  ├─ 2EF80F6C18C57E37D25365CA2A8E4FD6.jpg  # BOSS 1图片
+  │  ├─ 62200DD83E5F8819034E6D058F452E5F.jpg  # BOSS 2图片
+  │  ├─ 75CCE7B5E1B58922D3B49B6455844113.jpg  # BOSS 3图片
+  │  ├─ 58EBE0C66C49A01BE71264AC79DD0AF0.jpg  # BOSS 4图片
+  │  └─ 2A5AFB066FB306E54DD6EDAB5EF294E6.jpg  # BOSS 5图片
+  ├─ introduction/               # 补充说明目录（可选）
+  │  └─ （可放玩法细节、更新日志、彩蛋说明等TXT/MD文件）
+  └─ README.md                   # 游戏说明文档（当前文件）
+  ```
