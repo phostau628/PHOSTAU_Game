@@ -633,7 +633,7 @@ class Game:
                 overlay.fill((0, 0, 0, 180))
                 self.screen.blit(overlay, (0, 0))
 
-                text = self.font.render("SUCCESS!", True, (255, 235, 59))
+                text = self.font.render("SUCCESS!", True, (255, 50, 50))
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 

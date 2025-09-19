@@ -238,14 +238,14 @@ BOSS_TYPES = {
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 48888,
+        "health": 51927,
         "speed_range": (-6, 6),
         "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":43269,
+        "health":48888,
         "speed_range": (-5, 5),
         "bullet_speed": 12
     }
@@ -541,8 +541,7 @@ class Game:
                     self.player.shoot_delay=50
                 else:
                     self.player.update4(keys)
-                    self.player.shoot_delay=40
-
+                    self.player.shoot_delay=35
                 self.enemies.update()
 
                 # 碰撞检测优化
