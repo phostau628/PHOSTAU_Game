@@ -238,14 +238,14 @@ BOSS_TYPES = {
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 51927,
+        "health": 60126,
         "speed_range": (-6, 6),
         "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":48888,
+        "health": 55203,
         "speed_range": (-5, 5),
         "bullet_speed": 12
     }
