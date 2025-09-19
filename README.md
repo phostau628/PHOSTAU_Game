@@ -17,7 +17,7 @@
 
 随着波数推进，玩家火力将自动升级（射击角度增多、射速提升），无需手动解锁；三种模式差异化设计，满足从新手到硬核玩家的不同需求。（注：本人三个难度均已实测能过，附伪人模式通关截图）
 
-<img width="1035" height="702" alt="截图 2025-09-18 20-18-10" src="https://github.com/user-attachments/assets/bc5754aa-4dce-4c54-8ce2-32cf879d212d" />
+<img width="1035" height="702" alt="截图 2025-09-18 20-18-10" src="https://bgithub.xyz/user-attachments/assets/bc5754aa-4dce-4c54-8ce2-32cf879d212d" />
 
 
 ## ✨ 游戏特色
@@ -77,7 +77,9 @@
 | 5号      | 170×170  | 10000          | 16666         | UNKNOWN        | ±5像素/帧        | 极高射速（伪人）|
 
 
-## 🚀 安装与运行
+## 🚀 安装与运行 
+（省流：装了python，pygame，就能玩）
+
 ### 前置要求
 - 操作系统：Windows/macOS/Linux  （推荐使用非windows系统运行游戏，体验更好，windows体验也不差。若用window想追求极致体验，可禁用DPI缩放（自行搜索））
 - Python 版本：3.8 及以上（推荐3.10，兼容性更好）  
