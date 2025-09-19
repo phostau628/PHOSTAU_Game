@@ -290,7 +290,7 @@ class Enemy(pygame.sprite.Sprite):
             random.uniform(*self.speed_range) if self.is_boss else random.choice([-2, 2]),
             random.uniform(0.5, 1.5)
         )
-        self.fire_delay = 416 if self.is_boss else 999
+        self.fire_delay = 388 if self.is_boss else 999
         self.last_shot = 0
         self.min_y = 100 if self.is_boss else 50
 
@@ -535,13 +535,13 @@ class Game:
                     self.player.shoot_delay=60
                 elif self.wave<=10:
                     self.player.update2(keys)
-                    self.player.shoot_delay=60
+                    self.player.shoot_delay=55
                 elif self.wave<=15:
                     self.player.update3(keys)
                     self.player.shoot_delay=50
                 else:
                     self.player.update4(keys)
-                    self.player.shoot_delay=35
+                    self.player.shoot_delay=36
                 self.enemies.update()
 
                 # 碰撞检测优化

@@ -239,14 +239,14 @@ BOSS_TYPES = {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
         "health": 12888,
-        "speed_range": (-6, 6),
+        "speed_range": (-5, 5),
         "bullet_speed": 4
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
         "health":16666,
-        "speed_range": (-5, 5),
+        "speed_range": (-4.5, 4.5),
         "bullet_speed": 7
     }
 
@@ -532,16 +532,16 @@ class Game:
                 # 原有的游戏逻辑更新
                 if self.wave<=5:
                     self.player.update1(keys)
-                    self.player.shoot_delay=80
+                    self.player.shoot_delay=85
                 elif self.wave<=10:
                     self.player.update2(keys)
                     self.player.shoot_delay=66
                 elif self.wave<=15:
                     self.player.update3(keys)
-                    self.player.shoot_delay=53
+                    self.player.shoot_delay=57
                 else:
                     self.player.update4(keys)
-                    self.player.shoot_delay=42
+                    self.player.shoot_delay=45
 
                 self.enemies.update()
 
@@ -633,7 +633,7 @@ class Game:
                 overlay.fill((0, 0, 0, 180))
                 self.screen.blit(overlay, (0, 0))
 
-                text = self.font.render("SUCCESS!", True, (255, 235, 59))
+                text = self.font.render("SUCCESS!", True,  (255, 50, 50))
                 text_rect = text.get_rect(center=(500, 250))
                 self.screen.blit(text, text_rect)
 
