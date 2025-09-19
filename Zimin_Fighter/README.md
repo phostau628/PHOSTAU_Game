@@ -17,7 +17,8 @@
 
 随着波数推进，玩家火力将自动升级（射击角度增多、射速提升），无需手动解锁；三种模式差异化设计，满足从新手到硬核玩家的不同需求。（注：本人三个难度均已实测能过，附伪人模式通关截图）
 
-<img width="1035" height="702" alt="截图 2025-09-18 20-18-10" src="https://bgithub.xyz/user-attachments/assets/bc5754aa-4dce-4c54-8ce2-32cf879d212d" />
+<img width="2024" height="1382" alt="屏幕截图 2025-09-19 132129" src="https://github.com/user-attachments/assets/e1f01e42-6328-4efd-911f-e5ef6ea72b2b" />
+
 
 
 ## ✨ 游戏特色
