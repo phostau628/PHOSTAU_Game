@@ -558,7 +558,7 @@ class Game:
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy,bullet_list in hits.items():
-                    enemy.health -= 12 * len(bullet_list)
+                    enemy.health -= 13 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 

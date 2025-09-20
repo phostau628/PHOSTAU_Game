@@ -80,7 +80,7 @@ class Player(pygame.sprite.Sprite):
         except Exception as e:
             print(f"玩家图片加载失败: {e}")
             sys.exit()
-        self.orig_image = pygame.transform.scale(self.orig_image, (50, 80))
+        self.orig_image = pygame.transform.scale(self.orig_image, (30, 50))
         self.image = self.orig_image.copy()
         self.rect = self.image.get_rect(center=self.game.screen_rect.center)
         self.speed = 5
@@ -219,28 +219,28 @@ BOSS_TYPES = {
     2: {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
-        "health": 9999,
+        "health": 21078,
         "speed_range": (-4, 4),
         "bullet_speed": 5
     },
     3: {
         "image_path": "chart/75CCE7B5E1B58922D3B49B6455844113.jpg",
         "size": (180, 180),
-        "health": 22222,
-        "speed_range": (-1.5, 1.5),
+        "health": 66666,
+        "speed_range": (-2, 2),
         "bullet_speed": 6
     },
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 62806,
+        "health": 101268,
         "speed_range": (-6, 6),
         "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health": 58203,
+        "health": 96928,
         "speed_range": (-5, 5),
         "bullet_speed": 12
     }
@@ -278,14 +278,14 @@ class Enemy(pygame.sprite.Sprite):
                     self.health = 888
                     self.bullet_damage = 5
                 elif wave <= 9:
-                    self.health = 1100
+                    self.health = 1500
                     self.bullet_damage = 6
                 elif wave <= 14:
-                    self.health = 1500
-                    self.bullet_damage = 7
-                elif wave <= 19:
-                    self.health = 2000
+                    self.health = 2106
                     self.bullet_damage = 8
+                elif wave <= 19:
+                    self.health = 2666
+                    self.bullet_damage = 10
                 
         except Exception as e:
             print(f"图片加载失败: {e}")
@@ -418,11 +418,11 @@ class Enemy(pygame.sprite.Sprite):
         if self.boss_type == 1:
             damage = 7
         elif self.boss_type == 2:
-            damage = 8
-        elif self.boss_type == 3:
             damage = 9
+        elif self.boss_type == 3:
+            damage = 10
         else:  # boss4和boss5
-            damage = 12
+            damage = 16
             
         bullet = Bullet(
             self.rect.center,
@@ -573,7 +573,7 @@ class Game:
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy,bullet_list in hits.items():
-                    enemy.health -= 22 * len(bullet_list)
+                    enemy.health -= 27 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 
