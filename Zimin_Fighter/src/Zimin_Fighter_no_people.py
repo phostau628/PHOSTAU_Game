@@ -11,6 +11,7 @@ def resource_path(relative_path):
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
+
 def load_image(file):
     try:
         return pygame.image.load(resource_path(file))
@@ -29,26 +30,17 @@ def load_image(file):
 
 pygame.init()
 
-
-
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, pos, velocity, color, trail_color, is_boss=False):
+    def __init__(self, pos, velocity, color, trail_color, is_boss=False, boss_type=None, damage=5):
         super().__init__()
-        # 修正创建 Surface 对象的语法错误
-        size = (6, 20) if color == (255, 0, 0) else (4, 15)
-        self.image = pygame.Surface(size)
-        self.image.fill(color)
-        self.rect = self.image.get_rect(center=pos)
-        self.velocity = velocity
-        self.trail = []
-        self.trail_color = trail_color
-        self.start_time = pygame.time.get_ticks()
         self.is_boss = is_boss
+        self.boss_type = boss_type
+        self.damage = damage  # 直接使用传入的伤害值
 
         # 圆形BOSS子弹
         if self.is_boss:
             self.image = pygame.Surface((10, 10), pygame.SRCALPHA)  # 透明背景
-            pygame.draw.circle(self.image, color, (5, 5), 5)  # 绘制红色圆形
+            pygame.draw.circle(self.image, color, (5, 5), 5)  # 绘制圆形
         # 玩家子弹
         elif color == (200, 200, 200):
             self.image = pygame.Surface((4, 15))
@@ -59,6 +51,10 @@ class Bullet(pygame.sprite.Sprite):
             self.image.fill(color)
 
         self.rect = self.image.get_rect(center=pos)
+        self.velocity = velocity
+        self.trail = []
+        self.trail_color = trail_color
+        self.start_time = pygame.time.get_ticks()
 
     def update(self):
         # 增强子弹可见性
@@ -74,7 +70,6 @@ class Bullet(pygame.sprite.Sprite):
         if (self.rect.right < 0 or self.rect.left > 1000 or
                 self.rect.bottom < 0 or self.rect.top > 600):
             self.kill()
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
@@ -92,7 +87,6 @@ class Player(pygame.sprite.Sprite):
         self.health = 2880
         self.shoot_delay = 100
         self.last_shot = 0
-
 
     def update1(self, keys):
         if keys[pygame.K_a]:
@@ -213,6 +207,7 @@ class Player(pygame.sprite.Sprite):
                 (64, 64, 64)
             )
             self.game.bullets.add(bullet)
+
 BOSS_TYPES = {
     1: {
         "image_path": "chart/2EF80F6C18C57E37D25365CA2A8E4FD6.jpg",
@@ -224,7 +219,7 @@ BOSS_TYPES = {
     2: {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
-        "health": 7776,
+        "health": 9999,
         "speed_range": (-4, 4),
         "bullet_speed": 5
     },
@@ -238,25 +233,26 @@ BOSS_TYPES = {
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 60126,
+        "health": 62806,
         "speed_range": (-6, 6),
         "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health": 55203,
+        "health": 58203,
         "speed_range": (-5, 5),
         "bullet_speed": 12
     }
-
 }
+
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, game, pos, boss_type=None):
+    def __init__(self, game, pos, boss_type=None, wave=1):
         super().__init__()
         self.game = game
         self.is_boss = boss_type is not None
         self.boss_type = boss_type  # 新增属性
+        self.wave = wave  # 记录波数
         
         self.vertical_cooldown = 0  # 冷却计时器（毫秒）
         self.vertical_cooldown_max = 1000  # 每次转向后，强制持续移动1秒（1000毫秒）
@@ -272,11 +268,25 @@ class Enemy(pygame.sprite.Sprite):
                 self.speed_range = config["speed_range"]
                 self.bullet_speed = config["bullet_speed"]
             else:
-                # 普通敌人保持原有逻辑
+                # 普通敌人根据波数设置属性
                 img_path = resource_path("chart/5D12D4322F494C8D40ACB659FA2536DD.jpg")
                 self.orig_image = pygame.image.load(img_path)
                 size = (60, 60)
-                self.health = 888
+                
+                # 根据波数设置生命值和子弹伤害
+                if wave <= 4:
+                    self.health = 888
+                    self.bullet_damage = 5
+                elif wave <= 9:
+                    self.health = 1100
+                    self.bullet_damage = 6
+                elif wave <= 14:
+                    self.health = 1500
+                    self.bullet_damage = 7
+                elif wave <= 19:
+                    self.health = 2000
+                    self.bullet_damage = 8
+                
         except Exception as e:
             print(f"图片加载失败: {e}")
             sys.exit()
@@ -359,7 +369,7 @@ class Enemy(pygame.sprite.Sprite):
 
             elif self.boss_type == 2:
                 # 类型2：双向螺旋弹
-                phase = pygame.time.get_ticks() // 15
+                phase = pygame.time.get_ticks() / 15
                 for angle in range(0, 360, 21):
                     v1 = Vector2(0, self.bullet_speed).rotate(angle + phase)
                     v2 = Vector2(0, self.bullet_speed).rotate(angle - phase)
@@ -381,9 +391,6 @@ class Enemy(pygame.sprite.Sprite):
 
             elif self.boss_type == 4:
                 # 类型4：追踪弹+环形弹
-                # 环形弹
-
-
                 for _ in range(18):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
@@ -394,35 +401,46 @@ class Enemy(pygame.sprite.Sprite):
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
         else:
-
-
             for angle in [-45, 0, 45]:
                 velocity = Vector2(0, 5).rotate(angle)
                 bullet = Bullet(
                     self.rect.midtop,
                     velocity,
                     (255, 0, 0),  # 改为亮灰色
-                    (255,130,120)
+                    (255,130,120),
+                    is_boss=False,
+                    damage=self.bullet_damage  # 使用根据波数设置的伤害值
                 )
                 self.game.enemy_bullets.add(bullet)
 
     def _create_boss_bullet(self, velocity):
+        # 根据BOSS类型设置伤害值
+        if self.boss_type == 1:
+            damage = 7
+        elif self.boss_type == 2:
+            damage = 8
+        elif self.boss_type == 3:
+            damage = 9
+        else:  # boss4和boss5
+            damage = 12
+            
         bullet = Bullet(
             self.rect.center,
             velocity,
             (random.randint(100, 255), random.randint(50, 150), 50),  # 不同颜色
             (255,50,50),
-            is_boss=True
+            is_boss=True,
+            boss_type=self.boss_type,
+            damage=damage  # 传递伤害值
         )
         self.game.enemy_bullets.add(bullet)
 
     def draw_health(self, surface):
         bar_width = 60 if self.is_boss else 40
         health_width = int(bar_width * (self.health / self.max_health))
-        pygame.draw.rect(surface, (255, 0, 0), (self.rect.centerx - bar_width // 2, self.rect.top - 20, bar_width, 8))
+        pygame.draw.rect(surface, (255, 0, 0), (self.rect.centerx - bar_width / 2, self.rect.top - 20, bar_width, 8))
         pygame.draw.rect(surface, (0, 255, 0),
-                         (self.rect.centerx - bar_width // 2, self.rect.top - 20, health_width, 8))
-
+                         (self.rect.centerx - bar_width / 2, self.rect.top - 20, health_width, 8))
 
 class Game:
     def __init__(self):
@@ -442,12 +460,11 @@ class Game:
         self.font = pygame.font.Font(None, 48)
 
         self.max_wave = 20
-        # self.spawn_wave()
 
     def spawn_wave(self):
         self.wave += 1
         if self.wave % 5 == 0 and self.wave <= 20:
-            if self.wave == 20:  # 当波数为15时
+            if self.wave == 20:  # 当波数为20时
                 boss_type1 = 4  # 可以自行指定第一个BOSS的类型
                 boss_type2 = 5  # 可以自行指定第二个BOSS的类型
                 enemy1 = Enemy(
@@ -478,11 +495,8 @@ class Game:
             for _ in range(8):
                 x = random.randrange(50, 950)
                 y = random.randrange(-300, -100)
-                enemy = Enemy(self, (x, y))
+                enemy = Enemy(self, (x, y), wave=self.wave)  # 传递当前波数
                 self.enemies.add(enemy)
-
-
-
 
     def run(self):
         while True:
@@ -528,7 +542,6 @@ class Game:
                 continue  # 跳过后面的游戏逻辑，停留在开始界面
 
             if not self.game_over and not self.victory:
-
                 # 原有的游戏逻辑更新
                 if self.wave<=5:
                     self.player.update1(keys)
@@ -546,8 +559,11 @@ class Game:
 
                 # 碰撞检测优化
                 if pygame.time.get_ticks() % 2 == 0:
-                    if pygame.sprite.spritecollide(self.player, self.enemy_bullets, True):
-                        self.player.health = max(0, self.player.health - 5)
+                    # 修改：计算子弹总伤害
+                    hits = pygame.sprite.spritecollide(self.player, self.enemy_bullets, True)
+                    if hits:
+                        total_damage = sum(bullet.damage for bullet in hits)
+                        self.player.health = max(0, self.player.health - total_damage)
                         if self.player.health <= 0:
                             self.game_over = True
 
@@ -556,8 +572,8 @@ class Game:
                     self.enemies, self.bullets, False, True,
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
-                for enemy, _ in hits.items():
-                    enemy.health -= 12
+                for enemy,bullet_list in hits.items():
+                    enemy.health -= 22 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 
@@ -640,10 +656,8 @@ class Game:
                 self.again_rect = again_text.get_rect(center=(500, 350))
                 self.screen.blit(again_text, self.again_rect)
 
-
             pygame.display.flip()
             self.clock.tick(90)
-
 
 if __name__ == "__main__":
     Game().run()

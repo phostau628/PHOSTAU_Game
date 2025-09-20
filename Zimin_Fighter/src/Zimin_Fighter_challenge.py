@@ -217,35 +217,35 @@ BOSS_TYPES = {
     1: {
         "image_path": "chart/2EF80F6C18C57E37D25365CA2A8E4FD6.jpg",
         "size": (140, 140),
-        "health": 500,
+        "health": 1000,
         "speed_range": (-3, 3),
         "bullet_speed": 4
     },
     2: {
         "image_path": "chart/62200DD83E5F8819034E6D058F452E5F.jpg",
         "size": (160 , 160),
-        "health": 3666,
+        "health": 6666,
         "speed_range": (-4, 4),
         "bullet_speed": 5
     },
     3: {
         "image_path": "chart/75CCE7B5E1B58922D3B49B6455844113.jpg",
         "size": (180, 180),
-        "health": 8000,
+        "health": 15000,
         "speed_range": (-1.5, 1.5),
         "bullet_speed": 6
     },
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 12888,
+        "health": 22222,
         "speed_range": (-5, 5),
         "bullet_speed": 4
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":16666,
+        "health":19999,
         "speed_range": (-4.5, 4.5),
         "bullet_speed": 7
     }
@@ -557,8 +557,8 @@ class Game:
                     self.enemies, self.bullets, False, True,
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
-                for enemy, _ in hits.items():
-                    enemy.health -= 12
+                for enemy,bullet_list in hits.items():
+                    enemy.health -= 12 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 
