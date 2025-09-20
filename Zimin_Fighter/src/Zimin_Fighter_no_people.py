@@ -234,15 +234,15 @@ BOSS_TYPES = {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
         "health": 101268,
-        "speed_range": (-6, 6),
+        "speed_range": (-5, 5),
         "bullet_speed": 2
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
         "health": 96928,
-        "speed_range": (-5, 5),
-        "bullet_speed": 12
+        "speed_range": (-6, 6),
+        "bullet_speed": 14
     }
 }
 
@@ -390,13 +390,14 @@ class Enemy(pygame.sprite.Sprite):
                     self._create_boss_bullet(velocity)
 
             elif self.boss_type == 4:
-                # 类型4：追踪弹+环形弹
-                for _ in range(18):
+                # 类型4：子弹云
+                for _ in range(20):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
 
             elif self.boss_type == 5:
+                # 类型5：穿魂弹
                 for angle in [-90,-45,-25,0,25, 45,90]:
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
                     self._create_boss_bullet(velocity)
@@ -421,8 +422,10 @@ class Enemy(pygame.sprite.Sprite):
             damage = 9
         elif self.boss_type == 3:
             damage = 10
-        else:  # boss4和boss5
+        elif self.boss_type == 4:
             damage = 16
+        else:  
+            damage = 25
             
         bullet = Bullet(
             self.rect.center,
@@ -573,7 +576,7 @@ class Game:
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy,bullet_list in hits.items():
-                    enemy.health -= 27 * len(bullet_list)
+                    enemy.health -= 29 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 
