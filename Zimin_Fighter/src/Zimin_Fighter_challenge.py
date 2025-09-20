@@ -231,21 +231,21 @@ BOSS_TYPES = {
     3: {
         "image_path": "chart/75CCE7B5E1B58922D3B49B6455844113.jpg",
         "size": (180, 180),
-        "health": 15000,
+        "health": 12000,
         "speed_range": (-1.5, 1.5),
         "bullet_speed": 6
     },
     4: {
         "image_path": "chart/58EBE0C66C49A01BE71264AC79DD0AF0.jpg",
         "size": (170, 170),
-        "health": 22222,
+        "health": 18888,
         "speed_range": (-5, 5),
         "bullet_speed": 4
     },
     5: {
         "image_path": "chart/2A5AFB066FB306E54DD6EDAB5EF294E6.jpg",
         "size": (170, 170),
-        "health":19999,
+        "health":16666,
         "speed_range": (-4.5, 4.5),
         "bullet_speed": 7
     }
@@ -380,8 +380,6 @@ class Enemy(pygame.sprite.Sprite):
                     self._create_boss_bullet(velocity)
 
             elif self.boss_type == 4:
-                # 类型4：追踪弹+环形弹
-                # 环形弹
 
 
                 for _ in range(20):
@@ -558,7 +556,7 @@ class Game:
                     collided=pygame.sprite.collide_circle_ratio(0.7)
                 )
                 for enemy,bullet_list in hits.items():
-                    enemy.health -= 13 * len(bullet_list)
+                    enemy.health -= 14 * len(bullet_list)
                     if enemy.health <= 0:
                         enemy.kill()
 

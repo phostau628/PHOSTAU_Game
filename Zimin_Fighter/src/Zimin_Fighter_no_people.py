@@ -390,7 +390,7 @@ class Enemy(pygame.sprite.Sprite):
                     self._create_boss_bullet(velocity)
 
             elif self.boss_type == 4:
-                # 类型4：子弹云
+                # 类型4：子弹雨
                 for _ in range(20):
                     angle = random.uniform(0, 360)
                     velocity = Vector2(0, self.bullet_speed).rotate(angle)
